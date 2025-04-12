@@ -1,0 +1,51 @@
+1.  **Evolution of Embeddings:** Briefly describe the key limitation of TF-IDF that Word2Vec aimed to solve. What limitation of sequential models (like LSTMs) did the Transformer architecture address with its attention mechanism?
+
+    TF-IDF allowed for the representation of words and documents as numerical vectors, the big issue this faced was that it failed to capture
+    semantic meaning and context. Word2Vec allowed for the learning of dense vector representations from large text databases which allowed for the ability to determine semantic relationships between words.
+    Transformer architecture allowed for the models to effectively determine what weight of importancne could be given to each word when processed which allowed for deeper understandig and better understanding of semantic relationships with those words.
+
+2.  **BERT's Contribution:** What was the significance of BERT's "bidirectional" pre-training compared to earlier models?
+
+    BERT's bidirectional pre-training allowed for it to look for context for analyzing tokens by looking both forward and backwards, which allowed for it to understand word relationships and context within the sentences analyazed much better.
+
+3.  **BERT vs. Ada:** Create a table summarizing the key differences (pros/cons) between using a locally run Sentence-BERT model versus the OpenAI `text-embedding-ada-002` API for generating embeddings in a project.
+
+    BERT:                                                        OpenAI:
+    Local(via libraries or self-hosted API)                      Cloud API(OpenAI)
+    Free(model weights) + computing cost(hardware)               Pay-Per-Token
+    Local data ensures high privacy                              Lower due to data being sent to the cloud
+    performance is based on hardware                             Very fast (highly optimized cloud)
+    dimensionality also varies                                   1536 dimensionality
+    Max input can vary usually 512                               8191 input
+    Moderately easy to use, requires a set up and management     Very easy requiring simple API call
+    Possibly can be very high but varies                         Very high as it's optimized for general purposes
+    Can be easily customized                                     None, model that's provided is what can be used
+
+4.  **Chunking Scenario:** Imagine you have a large PDF textbook (1000 pages) that you want to use for RAG.
+    *   Why is chunking absolutely necessary here (consider model input limits)?
+
+        It needs to be chunked in order to fit within the RAG's input limits, breaking it down into chunks can also allow for deeper analysis of context
+        embeddings being generated for smaller chunks is faster than dealing with it all at once.
+
+    *   Describe *two* different chunking strategies you could use.
+
+        Document-Specific Chunking and Semantic Chunking would be ideal. The latter would allow for focus on typical separators seen in formatting in the pdf textbook as well as analysis of the chunks for syntax, could be more expensive.
+        Document-Specific chunking would analyze it in the textbook's structure.
+
+    *   What factors would influence your choice of chunk *size* and *overlap*?
+
+        My choices would probably involve the limit of my tokens and nature of the content, the two are what seem to be quite important in this.
+
+
+5.  **Model Selection Rationale:** For each scenario below, which embedding approach (OpenAI Ada vs. Local SBERT) might be more suitable and *why*? Justify your choice based on the factors discussed (cost, privacy, performance, quality, ease of use).
+    *   A startup building a quick prototype chatbot for public website FAQs.
+
+        The OpenAI Ada would be best as it's most suitable and cost-effective for the quick prototypes being constructed for the public website FAQs.
+
+    *   A hospital developing an internal system to search sensitive patient record summaries (anonymized for the search, of course!).
+
+        Local SBERT as it allows local hosting and as a result more privacy in comparison to OpenAI.
+
+    *   A solo developer building a personal note-taking app with semantic search features, running only on their own powerful desktop PC.
+        
+        Local SBERT allows for customization and can be cost-efficient and can be easily run on the powerful desktop PC.

@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const http = require('http');
 const { Server } = require("socket.io"); // Import the Server class from socket.io
@@ -75,8 +74,10 @@ io.on('connection', async (socket) => {
         console.error("Error fetching welcome message:", error);
         socket.emit('system message', "Sorry, couldn't fetch the welcome message.");
     }
-  });
 
+    // ✦ NEW: Emit updated user list to all clients
+    io.emit('user list', Object.values(users));
+  });
 
   // Listen for 'disconnect' events
   // ANONYMOUS FUNCTION CALLBACK
@@ -87,6 +88,9 @@ io.on('connection', async (socket) => {
       // Broadcast to other users that this user has left
       socket.broadcast.emit('system message', `${username} has left the chat.`);
       delete users[socket.id]; // Remove user from our tracking object
+
+      // ✦ NEW: Emit updated user list to all clients
+      io.emit('user list', Object.values(users));
     } else {
         console.log(`❌ User ${socket.id} (no username set) disconnected`);
     }
@@ -107,9 +111,23 @@ io.on('connection', async (socket) => {
        socket.emit('system message', "Please set a username before sending messages.");
     }
   });
+
+  // ✦ NEW: Listen for typing indicators
+  socket.on('typing', () => {
+    const username = users[socket.id];
+    if (username) {
+      socket.broadcast.emit('user typing', username);
+    }
+  });
+
+  socket.on('stop typing', () => {
+    const username = users[socket.id];
+    if (username) {
+      socket.broadcast.emit('user stopped typing', username);
+    }
+  });
 });
 // --- End Socket.IO Logic ---
-
 
 // Start the server
 // ANONYMOUS FUNCTION CALLBACK for when the server is ready

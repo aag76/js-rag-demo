@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,78 +11,74 @@
         #messages { list-style-type: none; margin: 0; padding: 0; }
         #messages > li { padding: 0.5rem 1rem; }
         #messages > li:nth-child(odd) { background: #efefef; }
+        #typing-indicator { font-style: italic; color: gray; margin-left: 1rem; }
+        #user-list { font-size: small; color: #555; margin: 0.5rem 1rem; }
     </style>
 </head>
 <body>
     <ul id="messages"></ul>
+    <div id="typing-indicator"></div>
+    <div id="user-list"></div>
     <form id="form" action="">
         <input id="input" autocomplete="off" /><button>Send</button>
     </form>
 
-    <!-- Include the Socket.IO client library -->
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        // Connect to the Socket.IO server (defaults to the server that served this page)
         const socket = io();
         let username = '';
-
-        // Get references to the HTML elements
         const form = document.getElementById('form');
         const input = document.getElementById('input');
         const messages = document.getElementById('messages');
+        const typingIndicator = document.getElementById('typing-indicator');
+        const userList = document.getElementById('user-list');
 
-        // --- Get Username ---
+        // Acquire Username
         function getUsername() {
             username = prompt("Please enter your username:");
             if (!username || username.trim() === '') {
                 username = `User_${Math.random().toString(36).substring(2, 7)}`;
                 alert(`No username entered. Assigned: ${username}`);
             }
-            socket.emit('set username', username); // Send username to server
+            socket.emit('set username', username);
         }
 
-        // --- Sending Messages ---
-        // Add an event listener for when the form is submitted
+        // Submit Message
         form.addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent the default form submission (page reload)
-            if (input.value && username) { // Check if the input field is not empty AND username is set
-                // Emit a 'chat message' event to the server with the input value
+            event.preventDefault();
+            if (input.value && username) {
                 socket.emit('chat message', input.value);
-                input.value = ''; // Clear the input field
+                input.value = '';
+                stopTyping();
             }
         });
 
-        // --- Receiving Messages ---
-        // Add an event listener for 'chat message' events coming FROM the server
-        // This is a CALLBACK function (the anonymous function provided here).
-        // It gets called *later* by the socket.io library when a 'chat message' event arrives.
-        socket.on('chat message', function(data) { // `function(data) {...}` is an ANONYMOUS FUNCTION
+        // Receive Chat Message
+        socket.on('chat message', function(data) {
             displayMessage(data.user, data.msg);
         });
 
-        // Listen for system messages (like join/leave/welcome)
+        // Receive System Message
         socket.on('system message', function(msg) {
             displayMessage('System', msg, true);
         });
 
-        // --- Utility function to display messages ---
         function displayMessage(user, msg, isSystem = false) {
-            const item = document.createElement('li'); // Create a new list item element
+            const item = document.createElement('li');
             if (isSystem) {
                 item.style.fontStyle = 'italic';
                 item.style.color = 'gray';
-                item.textContent = msg; // System messages don't show 'System:' prefix explicitly
+                item.textContent = msg;
             } else {
-                item.textContent = `${user}: ${msg}`; // Set its text content
+                item.textContent = `${user}: ${msg}`;
             }
-            messages.appendChild(item); // Add the list item to the messages list
-            window.scrollTo(0, document.body.scrollHeight); // Scroll to the bottom
+            messages.appendChild(item);
+            window.scrollTo(0, document.body.scrollHeight);
         }
 
-        // --- Optional: Listen for connect/disconnect events on client ---
         socket.on('connect', () => {
             console.log('✅ Connected to server:', socket.id);
-            getUsername(); // Ask for username after connecting
+            getUsername();
         });
 
         socket.on('disconnect', () => {
@@ -91,6 +86,51 @@
             displayMessage('System', 'You have been disconnected.', true);
         });
 
+        // Typing Indicators
+        let typing = false;
+        let timeout;
+        const typingUsers = new Set();
+
+        input.addEventListener('input', () => {
+            if (input.value && !typing) {
+                typing = true;
+                socket.emit('typing');
+            }
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                if (typing) {
+                    stopTyping();
+                }
+            }, 1000);
+        });
+
+        function stopTyping() {
+            typing = false;
+            socket.emit('stop typing');
+        }
+
+        socket.on('user typing', (user) => {
+            typingUsers.add(user);
+            updateTypingIndicator();
+        });
+
+        socket.on('user stopped typing', (user) => {
+            typingUsers.delete(user);
+            updateTypingIndicator();
+        });
+
+        function updateTypingIndicator() {
+            if (typingUsers.size > 0) {
+                typingIndicator.textContent = `${Array.from(typingUsers).join(', ')} ${typingUsers.size === 1 ? 'is' : 'are'} typing...`;
+            } else {
+                typingIndicator.textContent = '';
+            }
+        }
+
+        // User List
+        socket.on('user list', (users) => {
+            userList.textContent = `Online: ${users.join(', ')}`;
+        });
     </script>
 </body>
 </html>
