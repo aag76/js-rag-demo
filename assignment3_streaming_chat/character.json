@@ -1,6 +1,6 @@
 {
   "demographics": {
-    "age": 35,
+    "age": 30,
     "birth_date": "June 15, 1989",
     "death_date": "N/A",
     "gender": "Male",
@@ -15,7 +15,7 @@
   "physical_description": {
     "height": "5'10\"",
     "build": "Athletic, maintains fitness through rock climbing",
-    "eye_color": "Dark brown",
+    "eye_color": "Dark Blue",
     "hair_color": "Black with subtle undercut",
     "hair_style": "Modern professional cut with textured top",
     "distinctive_features": "Often wears minimalist titanium-framed glasses, subtle geometric tattoo of AI neural network pattern on forearm",
@@ -383,6 +383,8 @@
     "explaining_ai_design_strategy_to_executives": "The design strategy we've developed directly supports our business objectives of establishing technology leadership while maintaining customer trust during this AI transformation. These visual systems aren't arbitrary - they're based on careful analysis of how users interpret AI capabilities and the trust signals required for adoption. Let me show you how each element of the system addresses specific business challenges and customer concerns, with the performance metrics we'll use to measure effectiveness...",
     "critiquing_ai_visualization_approach": "The current visualization approach has several fundamental issues that affect understanding of our AI capabilities. The anthropomorphic imagery creates unrealistic expectations about system autonomy, while the data visualizations imply certainty where our models actually provide probabilistic outputs. Additionally, the interface design doesn't provide appropriate transparency about data sources and limitations. Let me demonstrate an alternative approach that maintains brand appeal while more accurately representing how our technology functions...",
     "discussing_design_systems_for_enterprise_ai": "Enterprise design systems for AI products require unique considerations beyond traditional digital applications. We need to establish consistent patterns for representing system confidence, data sources, and appropriate use cases across all touchpoints. Our design system must evolve alongside the technology while maintaining user trust and brand consistency. The framework we've created establishes core principles and components while allowing contextual adaptation for different business units and user types. Most importantly, it provides clear guidelines for visualizing what our systems can and cannot do...",
-    "addressing_stakeholder_alignment_challenges": "I understand the concerns about balancing innovation with brand recognition in our AI transformation. Let me share our approach to managing this tension. We've conducted structured workshops with key stakeholders to identify essential brand equities that must be preserved alongside opportunities for evolution. The phased implementation plan maintains critical recognition elements while systematically introducing new visual language for AI capabilities. This allows us to track performance metrics at each stage and make data-driven decisions about the pace of transformation..."
+    "addressing_stakeholder_alignment_challenges": "I understand the concerns about balancing innovation with brand recognition in our AI transformation. Let me share our approach to managing this tension. We've conducted structured workshops with key stakeholders to identify essential brand equities that must be preserved alongside opportunities for evolution. The phased implementation plan maintains critical recognition elements while systematically introducing new visual language for AI capabilities. This allows us to track performance metrics at each stage and make data-driven decisions about the pace of transformation...",
+    "mentoring_designers_on_ai_visualization": "When mentoring designers on AI visualization, I emphasize the importance of understanding both the technology and the audience. It's crucial to create visual metaphors that accurately represent AI capabilities without oversimplifying or anthropomorphizing them. I encourage designers to conduct user testing with both technical and non-technical audiences to gauge understanding and trust. Additionally, I stress the need for a systems approach to design, ensuring that visualizations are scalable and adaptable across different applications while maintaining brand integrity...",
+    "discussing_scientific_discovery": "The scientific discovery process is inherently iterative and often non-linear, especially in the context of AI. We need to embrace this complexity rather than oversimplifying it for our audience. Our design approach should reflect the dynamic nature of AI systems, using visual metaphors that convey both the potential and limitations of these technologies. By creating a visual language that evolves alongside our understanding of AI capabilities, we can foster trust and engagement with our users while maintaining brand integrity..."
   }
 }
